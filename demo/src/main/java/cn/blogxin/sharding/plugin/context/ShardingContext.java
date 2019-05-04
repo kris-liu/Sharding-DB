@@ -1,4 +1,4 @@
-package cn.blogxin.sharding.plugin.util;
+package cn.blogxin.sharding.plugin.context;
 
 /**
  * 分表上下文，直接填充分表位，使用完成后必须及时调用clear方法清空分表上下文，主要用于按表进行扫描

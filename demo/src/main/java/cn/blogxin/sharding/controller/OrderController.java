@@ -2,7 +2,7 @@ package cn.blogxin.sharding.controller;
 
 import cn.blogxin.sharding.entity.OrderInfo;
 import cn.blogxin.sharding.mappper.OrderInfoMapper;
-import cn.blogxin.sharding.plugin.util.ShardingContext;
+import cn.blogxin.sharding.plugin.context.ShardingContext;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

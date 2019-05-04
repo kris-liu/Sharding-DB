@@ -3,7 +3,7 @@ package cn.blogxin.sharding.plugin;
 import cn.blogxin.sharding.plugin.spring.ShardingDbAutoConfig;
 import cn.blogxin.sharding.plugin.strategy.DefaultShardingStrategy;
 import cn.blogxin.sharding.plugin.strategy.ShardingStrategy;
-import cn.blogxin.sharding.plugin.util.ShardingContext;
+import cn.blogxin.sharding.plugin.context.ShardingContext;
 import com.baomidou.mybatisplus.toolkit.PluginUtils;
 import com.google.common.collect.Maps;
 import org.apache.ibatis.executor.statement.StatementHandler;
