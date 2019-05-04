@@ -13,6 +13,7 @@
     <url>https://github.com/kris-liu/Sharding-DB</url>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <springboot.version>2.0.8.RELEASE</springboot.version>
         <guava.version>19.0</guava.version>
