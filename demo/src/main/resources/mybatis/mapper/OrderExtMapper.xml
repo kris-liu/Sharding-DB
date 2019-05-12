@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.blogxin.sharding.demo.mappper.OrderInfoMapper">
-    <resultMap id="BaseResultMap" type="cn.blogxin.sharding.demo.entity.OrderInfo">
+<mapper namespace="cn.blogxin.sharding.demo.mappper.OrderExtMapper">
+    <resultMap id="BaseResultMap" type="cn.blogxin.sharding.demo.entity.OrderExt">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="order_id" property="orderId" jdbcType="VARCHAR"/>
-        <result column="status" property="status" jdbcType="INTEGER"/>
-        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="ext_key" property="extKey" jdbcType="VARCHAR"/>
+        <result column="ext_value" property="extValue" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, order_id, status, remark
+        id, order_id, ext_key, ext_value
     </sql>
 
     <!--<select id="getAll" resultMap="BaseResultMap"  >-->
@@ -21,37 +21,30 @@
     <select id="query" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM order_info
+        FROM order_ext
         WHERE order_id = #{orderId}
     </select>
 
-    <select id="query2" resultMap="BaseResultMap">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM order_info
-        WHERE order_id = #{orderId}  and status = #{status}
-    </select>
-
-    <insert id="insert">
+    <insert id="insert" >
         INSERT INTO
-        order_info
-        (order_id,status,remark)
+          order_ext
+        (order_id,ext_key,ext_value)
         VALUES
-        (#{orderId}, #{orderInfo.status}, #{orderInfo.remark})
+        (#{orderId}, #{orderExt.extKey}, #{orderExt.extValue})
     </insert>
 
-    <update id="update" parameterType="cn.blogxin.sharding.demo.entity.OrderInfo">
+    <update id="update" parameterType="cn.blogxin.sharding.demo.entity.OrderExt">
        UPDATE
-        order_info
+        order_ext
        SET 
-       	status = #{status}
+       	ext_value = #{extValue}
        WHERE 
        		order_id = #{orderId}
     </update>
 
     <delete id="delete" parameterType="java.lang.String">
        DELETE FROM
-       		 order_info
+       		 order_ext
        WHERE 
        		 order_id =#{orderId}
     </delete>

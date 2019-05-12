@@ -1,9 +1,10 @@
-package cn.blogxin.sharding.plugin;
+package cn.blogxin.sharding.plugin.interceptor;
 
-import cn.blogxin.sharding.plugin.spring.ShardingDbAutoConfig;
-import cn.blogxin.sharding.plugin.strategy.DefaultShardingStrategy;
+import cn.blogxin.sharding.plugin.Sharding;
+import cn.blogxin.sharding.plugin.ShardingContext;
+import cn.blogxin.sharding.plugin.ShardingTableConfiguration;
+import cn.blogxin.sharding.plugin.strategy.DefaultShardingStrategyWithDataBase;
 import cn.blogxin.sharding.plugin.strategy.ShardingStrategy;
-import cn.blogxin.sharding.plugin.context.ShardingContext;
 import com.baomidou.mybatisplus.toolkit.PluginUtils;
 import com.google.common.collect.Maps;
 import org.apache.ibatis.executor.statement.StatementHandler;
@@ -22,7 +23,7 @@ import java.util.Properties;
  * mybatis分表插件
  *
  * @author kris
- * @see ShardingDbAutoConfig
+ * @see ShardingTableConfiguration
  */
 @Intercepts({@Signature(method = "prepare", type = StatementHandler.class, args = {Connection.class, Integer.class})})
 public class ShardingInterceptor implements Interceptor {
@@ -35,7 +36,7 @@ public class ShardingInterceptor implements Interceptor {
     private static final String PARAM_1 = "param1";
     private static final String POINT = ".";
 
-    private static final ShardingStrategy DEFAULT_SHARDING_STRATEGY = new DefaultShardingStrategy();
+    private static final ShardingStrategy DEFAULT_SHARDING_STRATEGY = new DefaultShardingStrategyWithDataBase();
     private static final Map<String, ShardingStrategy> SHARDING_STRATEGY_MAP = Maps.newConcurrentMap();
 
     @Override
@@ -58,11 +59,11 @@ public class ShardingInterceptor implements Interceptor {
         String shardingKey = getShardingKey(metaObject);
         String targetTableName;
         if (!StringUtils.isEmpty(shardingKey)) {
-            targetTableName = getShardingStrategy(sharding).getTargetTableName(sharding.tableName(), sharding.count(), shardingKey);
-        } else if (StringUtils.isEmpty(shardingKey) && !StringUtils.isEmpty(ShardingContext.getSharding())) {
-            targetTableName = DEFAULT_SHARDING_STRATEGY.getTargetTableName(sharding.tableName(), sharding.count(), ShardingContext.getSharding());
+            targetTableName = getShardingStrategy(sharding).getTargetTableName(sharding, shardingKey);
+        } else if (StringUtils.isEmpty(shardingKey) && !StringUtils.isEmpty(ShardingContext.getShardingTable())) {
+            targetTableName = DEFAULT_SHARDING_STRATEGY.getTargetTableName(sharding, ShardingContext.getShardingTable());
         } else {
-            throw new RuntimeException("没有找到分表信息。shardingKey=" + shardingKey + "，ShardingContext=" + ShardingContext.getSharding());
+            throw new RuntimeException("没有找到分表信息。shardingKey=" + shardingKey + "，ShardingContext=" + ShardingContext.getShardingTable());
         }
         return targetTableName;
     }

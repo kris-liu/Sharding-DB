@@ -1,4 +1,4 @@
-package cn.blogxin.sharding.entity;
+package cn.blogxin.sharding.demo.entity;
 
 /**
  * @author kris
