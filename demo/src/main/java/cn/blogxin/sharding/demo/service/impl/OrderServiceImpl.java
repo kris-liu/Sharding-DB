@@ -26,7 +26,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(rollbackFor = Exception.class)
     public void insert(OrderInfo orderInfo, OrderExt orderExt) {
         orderInfoMapper.insert(orderInfo.getOrderId(), orderInfo);
-        System.out.println(1/0);
+//        System.out.println(1/0);
         orderExtMapper.insert(orderExt.getOrderId(), orderExt);
     }
 }

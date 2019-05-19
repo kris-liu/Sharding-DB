@@ -33,6 +33,11 @@
         <mybatis-plus.version>2.3</mybatis-plus.version>
     </properties>
 
+    <modules>
+        <module>plugin</module>
+        <module>demo</module>
+    </modules>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
