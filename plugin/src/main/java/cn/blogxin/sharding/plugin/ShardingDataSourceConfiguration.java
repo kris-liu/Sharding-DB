@@ -4,6 +4,7 @@ import cn.blogxin.sharding.plugin.bean.Database;
 import cn.blogxin.sharding.plugin.bean.ShardingDataSourceInfo;
 import cn.blogxin.sharding.plugin.strategy.AbstractShardingStrategyWithDataBase;
 import cn.blogxin.sharding.plugin.strategy.database.ShardingDataBaseStrategy;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
@@ -36,6 +38,7 @@ public class ShardingDataSourceConfiguration {
 
     private DataSource shardingDataSource() {
         Map<String, Database> databases = shardingProperties.getDatabases();
+        Preconditions.checkArgument(!CollectionUtils.isEmpty(databases), "不存在分库配置");
 
         Map<String, ShardingDataSourceInfo> shardingDataSourceInfoMap = Maps.newHashMap();
         Map<Object, Object> targetDataSources = Maps.newHashMap();

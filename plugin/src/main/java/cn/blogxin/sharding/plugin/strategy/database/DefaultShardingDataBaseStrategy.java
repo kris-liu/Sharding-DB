@@ -1,7 +1,10 @@
 package cn.blogxin.sharding.plugin.strategy.database;
 
 /**
- * 默认分库策略
+ * 默认分库策略，将分表从小到大均匀分配至各分库中
+ * 比如：
+ * 2个库，10个表
+ * 0-4表在0库，5-9表在1库
  *
  * @author kris
  */
