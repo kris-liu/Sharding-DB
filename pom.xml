@@ -7,6 +7,7 @@
     <groupId>cn.blogxin.sharding</groupId>
     <artifactId>sharding-db-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
     <description>分库分表工具</description>
@@ -127,12 +128,6 @@
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>${mybatis.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus</artifactId>
-                <version>${mybatis-plus.version}</version>
             </dependency>
 
             <dependency>

@@ -7,6 +7,7 @@ import cn.blogxin.sharding.plugin.strategy.database.ShardingDataBaseStrategy;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.zaxxer.hikari.HikariDataSource;
+import org.apache.commons.collections.MapUtils;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
@@ -21,6 +22,7 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 加载分库分表插件
@@ -53,12 +55,20 @@ public class ShardingDataSourceConfiguration {
             shardingDataSourceInfo.setShardingDataBaseStrategy(createShardingDataBaseStrategy(database.getShardingStrategy()));
             shardingDataSourceInfoMap.put(dataBaseName, shardingDataSourceInfo);
 
-            for (Map.Entry<Integer, DataSourceProperties> propertiesEntry : database.getDataSource().entrySet()) {
-                String shardingDataBaseKey = dataBaseName + propertiesEntry.getKey();
-                dataSource = createDataSource(propertiesEntry.getValue(), HikariDataSource.class);
-                targetDataSources.put(shardingDataBaseKey, dataSource);
+            Set<Map.Entry<String, Map<Integer, DataSourceProperties>>> entries = database.getDataSource().entrySet();
+            for (Map.Entry<String, Map<Integer, DataSourceProperties>> masterSlave : entries) {
+                String masterSlaveKey = masterSlave.getKey();
+                Map<Integer, DataSourceProperties> masterSlaveValue = masterSlave.getValue();
+                for (Map.Entry<Integer, DataSourceProperties> propertiesEntry : masterSlaveValue.entrySet()) {
+                    String shardingDataBaseKey = dataBaseName + masterSlaveKey + propertiesEntry.getKey();
+                    dataSource = createDataSource(propertiesEntry.getValue(), HikariDataSource.class);
+                    targetDataSources.put(shardingDataBaseKey, dataSource);
+                }
             }
         }
+
+        Preconditions.checkArgument(MapUtils.isNotEmpty(targetDataSources), "找不到database配置");
+        Preconditions.checkNotNull(dataSource, "找不到database配置");
 
         AbstractShardingStrategyWithDataBase.setShardingDataSourceInfoMap(shardingDataSourceInfoMap);
 

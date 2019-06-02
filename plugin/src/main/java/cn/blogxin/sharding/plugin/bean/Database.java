@@ -25,7 +25,7 @@ public class Database {
      * key：分库位
      * value：分库对应的dataSource配置
      */
-    private Map<Integer, DataSourceProperties> dataSource;
+    private Map<String, Map<Integer, DataSourceProperties>> dataSource;
 
     public String getShardingStrategy() {
         return shardingStrategy;
@@ -43,11 +43,11 @@ public class Database {
         this.shardingCount = shardingCount;
     }
 
-    public Map<Integer, DataSourceProperties> getDataSource() {
+    public Map<String, Map<Integer, DataSourceProperties>> getDataSource() {
         return dataSource;
     }
 
-    public void setDataSource(Map<Integer, DataSourceProperties> dataSource) {
+    public void setDataSource(Map<String, Map<Integer, DataSourceProperties>> dataSource) {
         this.dataSource = dataSource;
     }
 }

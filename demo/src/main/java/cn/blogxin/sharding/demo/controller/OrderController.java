@@ -1,11 +1,10 @@
 package cn.blogxin.sharding.demo.controller;
 
-import cn.blogxin.sharding.plugin.ShardingProperties;
 import cn.blogxin.sharding.demo.entity.Order;
 import cn.blogxin.sharding.demo.entity.OrderInfo;
 import cn.blogxin.sharding.demo.mappper.OrderInfoMapper;
-import cn.blogxin.sharding.plugin.ShardingContext;
 import cn.blogxin.sharding.demo.service.OrderService;
+import cn.blogxin.sharding.plugin.ShardingContext;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,12 +24,9 @@ public class OrderController {
     @Resource
     private OrderService orderService;
 
-    @Resource
-    private ShardingProperties shardingProperties;
-
-
     @RequestMapping("/query")
     public OrderInfo query(String orderId) {
+        ShardingContext.setSlave(true);
         return orderInfoMapper.query(orderId);
     }
 

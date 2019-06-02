@@ -20,6 +20,16 @@ public class ShardingContext {
      */
     private static final ThreadLocal<String> SHARDING_TABLE = new ThreadLocal<>();
 
+    /**
+     * MASTER OR SLAVE
+     */
+    private static final ThreadLocal<String> MASTER_SALVE = new ThreadLocal<String>() {
+        @Override
+        protected String initialValue() {
+            return Constants.MASTER;
+        }
+    };
+
 
     public static String getShardingDatabase() {
         return SHARDING_DATABASE.get();
@@ -37,8 +47,17 @@ public class ShardingContext {
         SHARDING_TABLE.set(shardingTable);
     }
 
+    public static void setSlave(boolean slave) {
+        MASTER_SALVE.set(slave ? Constants.SLAVE : Constants.MASTER);
+    }
+
+    public static String getMasterSalve() {
+        return MASTER_SALVE.get();
+    }
+
     public static void clear() {
         ShardingContext.SHARDING_DATABASE.remove();
         ShardingContext.SHARDING_TABLE.remove();
+        ShardingContext.MASTER_SALVE.remove();
     }
 }

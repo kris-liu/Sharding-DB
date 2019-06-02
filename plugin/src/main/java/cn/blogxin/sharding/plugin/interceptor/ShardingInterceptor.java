@@ -5,7 +5,6 @@ import cn.blogxin.sharding.plugin.ShardingContext;
 import cn.blogxin.sharding.plugin.ShardingTableConfiguration;
 import cn.blogxin.sharding.plugin.strategy.DefaultShardingStrategyWithDataBase;
 import cn.blogxin.sharding.plugin.strategy.ShardingStrategy;
-import com.baomidou.mybatisplus.toolkit.PluginUtils;
 import com.google.common.collect.Maps;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.plugin.*;
@@ -15,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
+import java.lang.reflect.Proxy;
 import java.sql.Connection;
 import java.util.Map;
 import java.util.Properties;
@@ -41,7 +41,7 @@ public class ShardingInterceptor implements Interceptor {
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
-        StatementHandler statementHandler = (StatementHandler) PluginUtils.realTarget(invocation.getTarget());
+        StatementHandler statementHandler = (StatementHandler) realTarget(invocation.getTarget());
         MetaObject metaObject = SystemMetaObject.forObject(statementHandler);
 
         String id = (String) metaObject.getValue(DELEGATE_MAPPED_STATEMENT_ID);
@@ -105,5 +105,13 @@ public class ShardingInterceptor implements Interceptor {
     @Override
     public void setProperties(Properties properties) {
 
+    }
+
+    private Object realTarget(Object target) {
+        if (Proxy.isProxyClass(target.getClass())) {
+            MetaObject metaObject = SystemMetaObject.forObject(target);
+            return realTarget(metaObject.getValue("h.target"));
+        }
+        return target;
     }
 }

@@ -26,7 +26,7 @@ public abstract class AbstractShardingStrategyWithDataBase implements ShardingSt
         ShardingDataSourceInfo shardingDataSourceInfo = shardingDataSourceInfoMap.get(sharding.databaseName());
         if (shardingDataSourceInfo != null) {
             int databaseNum = shardingDataSourceInfo.getShardingDataBaseStrategy().calculate(shardingDataSourceInfo.getShardingCount(), sharding.count(), tableSuffix);
-            ShardingContext.setShardingDatabase(sharding.databaseName() + databaseNum);
+            ShardingContext.setShardingDatabase(sharding.databaseName() + ShardingContext.getMasterSalve() + databaseNum);
         }
         return getTableName(sharding.tableName(), tableSuffix);
     }
