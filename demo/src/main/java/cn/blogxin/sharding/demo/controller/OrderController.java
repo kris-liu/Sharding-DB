@@ -26,8 +26,10 @@ public class OrderController {
 
     @RequestMapping("/query")
     public OrderInfo query(String orderId) {
-        ShardingContext.setSlave(true);
-        return orderInfoMapper.query(orderId);
+        ShardingContext.forceSlave();
+        OrderInfo query = orderInfoMapper.query(orderId);
+        ShardingContext.clear();
+        return query;
     }
 
     @RequestMapping("/query2")

@@ -22,6 +22,7 @@ public class ShardingContext {
 
     /**
      * MASTER OR SLAVE
+     * 建议通过切面设置强制读从库，DB操作执行完成后在切面执行clearSlave方法，清除主从上下文
      */
     private static final ThreadLocal<String> MASTER_SALVE = new ThreadLocal<String>() {
         @Override
@@ -47,8 +48,12 @@ public class ShardingContext {
         SHARDING_TABLE.set(shardingTable);
     }
 
-    public static void setSlave(boolean slave) {
-        MASTER_SALVE.set(slave ? Constants.SLAVE : Constants.MASTER);
+    public static void forceSlave() {
+        MASTER_SALVE.set(Constants.SLAVE);
+    }
+
+    public static void clearSlave() {
+        MASTER_SALVE.remove();
     }
 
     public static String getMasterSalve() {
