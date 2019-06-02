@@ -69,5 +69,7 @@
     @Sharding(sharding = true, databaseName = "test", tableName = "order_info", strategy = "cn.blogxin.sharding.plugin.strategy.HashShardingStrategyWithDataBase", count = 10)
     ```
 
-    该例子中，test库分两个库，每个库中各5张order_info表，总共分了10张表
 
+## 示例
+
+参见该项目的`demo`模块，该例子中，`test`库分两个库，每个库中各5张`order_info`表和`order_ext`表，总共分了10张表
