@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public abstract class AbstractShardingStrategyWithDataBase implements ShardingStrategy {
 
-    protected static Map<String, ShardingDataSourceInfo> shardingDataSourceInfoMap = Maps.newHashMap();
+    private static Map<String, ShardingDataSourceInfo> shardingDataSourceInfoMap = Maps.newHashMap();
 
     public static void setShardingDataSourceInfoMap(Map<String, ShardingDataSourceInfo> shardingDataSourceInfoMap) {
         AbstractShardingStrategyWithDataBase.shardingDataSourceInfoMap = shardingDataSourceInfoMap;
@@ -31,7 +31,7 @@ public abstract class AbstractShardingStrategyWithDataBase implements ShardingSt
         return getTableName(sharding.tableName(), tableSuffix);
     }
 
-    public String getTableName(String tableName, Integer shardingKey) {
+    private String getTableName(String tableName, Integer shardingKey) {
         return tableName + UNDERLINE + shardingKey;
     }
 
