@@ -79,6 +79,11 @@ public class ShardingInterceptor implements Interceptor {
         return shardingStrategy;
     }
 
+    /**
+     * 默认取第一个参数作为分表键
+     * @param metaObject
+     * @return
+     */
     private String getShardingKey(MetaObject metaObject) {
         String shardingKey = null;
         Object parameterObject = metaObject.getValue(DELEGATE_PARAMETER_HANDLER_PARAMETER_OBJECT);
