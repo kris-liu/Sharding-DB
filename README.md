@@ -8,7 +8,11 @@
 1. 引入分表配置启动类
 
     ```
-    @Import({ShardingTableConfiguration.class})
+    <dependency>
+        <groupId>cn.blogxin.sharding</groupId>
+        <artifactId>sharding-db-spring-boot-starter</artifactId>
+        <version>${project.parent.version}</version>
+    </dependency>
     ```
 
 2. 添加数据库连接配置，该配置与正常DB连接池配置相同
@@ -33,10 +37,20 @@
 1. 引入分库配置启动类，该启动类包括了分表配置启动类
 
     ```
-    @Import({ShardingDataSourceConfiguration.class})
+    <dependency>
+        <groupId>cn.blogxin.sharding</groupId>
+        <artifactId>sharding-db-spring-boot-starter</artifactId>
+        <version>${project.parent.version}</version>
+    </dependency>
     ```
 
-2. 添加数据库连接配置，配置库名，分库策略，分库数量，主库从库，每个数据库的连接池配置
+2. `application.properties`配置文件添加该配置用于启动分库能力
+    
+    ```
+    sharding.databases=enable
+    ```
+
+3. 添加数据库连接配置，配置库名，分库策略，分库数量，主库从库，每个数据库的连接池配置
 
     ```
     sharding.databases.test.shardingStrategy=cn.blogxin.sharding.plugin.strategy.database.DefaultShardingDataBaseStrategy
@@ -63,7 +77,7 @@
     sharding.databases.test.dataSource.slave.1.password=
     ```
 
-3. 在mybatis的mapper接口上添加`@Sharding`注解并配置各项属性，包括库名，表名，分表策略，分表数
+4. 在mybatis的mapper接口上添加`@Sharding`注解并配置各项属性，包括库名，表名，分表策略，分表数
 
     ```
     @Sharding(sharding = true, databaseName = "test", tableName = "order_info", strategy = "cn.blogxin.sharding.plugin.strategy.HashShardingStrategyWithDataBase", count = 10)

@@ -9,12 +9,12 @@ import com.google.common.collect.Maps;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.commons.collections.MapUtils;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.util.CollectionUtils;
@@ -31,8 +31,8 @@ import java.util.Set;
  */
 @Configuration
 @AutoConfigureBefore(DataSourceAutoConfiguration.class)
+@ConditionalOnProperty(name = "sharding.databases", havingValue = "enable")
 @EnableConfigurationProperties(ShardingProperties.class)
-@Import({ShardingTableConfiguration.class})
 public class ShardingDataSourceConfiguration {
 
     @Resource
